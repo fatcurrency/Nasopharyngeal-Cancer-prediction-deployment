@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>文件夹结构</title>
+</head>
+<body>
+    <h1>文件夹结构</h1>
+    <ul>
+    {% for file in file_list %}
+        <a href="/download?filename={{file}}"><li>{{ file }}</li></a>
+<!--        <li>{{ file }}</li>-->
+    {% endfor %}
+    </ul>
+
+<button onclick="location.href='/delete_file'" type="button"  id="go to filelist">删除file下所有文件</button>
+<button onclick="location.href='/'" type="button"  id="back to home">返回主页</button>
+</body>
+</html>

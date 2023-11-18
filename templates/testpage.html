@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <script
+      type="text/javascript"
+      src="https://cdn.lyshark.com/javascript/jquery/3.5.1/jquery.min.js"
+    ></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      function SendAjax() {
+        var username = $('input[name="username"]').val();
+        var password = $('input[name="password"]').val();
+        $.ajax({
+          url: "/",
+          type: "POST",
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          headers: { Authorization: "1a2cEFgh" },
+          data: JSON.stringify({ username: username, password: password }),
+          success: function (result) {
+            console.log("状态码: " + result.status + " 页面: " + result.page);
+          },
+          error: function () {
+            console.log("执行失败了");
+          },
+        });
+      }
+    </script>
+
+    <!--提交数据-->
+    <form action="/" method="post">
+      用户账号:
+      <input type="text" placeholder="用户账号" name="username" /><br /><br />
+      用户密码:
+      <input type="text" placeholder="用户密码" name="password" /><br /><br />
+      <input type="button" value="发送数据" onclick="SendAjax()" />
+    </form>
+  </body>
+</html>

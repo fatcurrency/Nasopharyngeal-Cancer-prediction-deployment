@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>online_tool</title>
+    <link rel="shortcut icon" href="#" />
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename = 'css/main.css') }}"
+    />
+    <script src="{{ url_for('static', filename = 'js/file_upload.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/calculate.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/data_process.js') }}"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="../css/main.css" /> -->
+    <!-- <script src="../static/js/page_change.js"></script>
+    <script src="../static/js/inputWrap.js"></script>
+    <script src="../static/js/file_upload.js"></script> -->
+    <!-- <script src="../static/js/calculate.js"></script> -->
+  </head>
+  <body>
+    <div class="navbar"></div>
+    <div class="container">
+      <div class="center">
+        <h2 class="mainTitle" style="margin: 0 auto;">
+          Induction Chemotherapy Efficacy Prediction System
+        </h2>
+        <p class="text" style="text-align: justify;">
+          &nbsp;&nbsp;The introduction chemotherapy (IC) efficacy predictive system is
+          constructed to predict the probability of complete biological response
+          (cBR) after three cycles of IC in locoregionally advanced
+          Nasopharyngeal Carcinoma (LA-NPC) patients. Using dynamic graph
+          convolutional network (DGCN), our framework integrated the information
+          of nonstructural MR image data and structural clinical factor data.
+        </p>
+        <p class="text" style="text-align: justify;">
+          &nbsp;&nbsp;You can upload MRI compressed file of newly-diagnosed LA-NPC patients
+          and fill their clinical data in the form below to use the online
+          calculator and get the overall scores for TPF and GP, respectively.
+          Based on the predictive values for probability of cBR, our system will
+          provide the optimal strategy for IC regimens.
+        </p>
+
+        <div class="page_list">
+        </div>
+        <p class="text" style="text-align: justify;">
+          &nbsp;&nbsp;Please upload a zip file containing three NIfTI files (T1.nii.gz, T2.nii.gz, and T1C.nii.gz) corresponding to three MRI sequences (axial T1-weighted, T2-weighted, and T1 contrast) from a specific patient.
+
+        </p>
+        <div class="uploadWrap">
+          <div class="up">+</div>
+          <form>
+            <input
+              type="file"
+              name="file"
+              id="fileUpload"
+              accept="application/zip"
+            />
+          </form>
+          </a>
+        </div>
+
+        <p style="padding: 20px 40px;font-size: 20px;">
+          Please input the clinical information of the patient
+        </p>
+        <div class="wrap">
+        <div class="inputWrap">
+          <!--age-->
+          <div class="form-group">
+            <label class="title" for="name">Age (years)</label>
+            <input
+              type="number"
+              class="form-control"
+              id="age_at_hj"
+              placeholder="please input age"
+            />
+          </div>
+          <!--gender-->
+          <div class="form-group">
+            <label class="title" for="name">Sex </label>
+            <div class="radio-group">
+              <label class="radio-inline">
+                <input
+                  type="radio"
+                  name="Sex"
+                  id="Sex_option1"
+                  value="1"
+                  checked
+                />
+                <span>Male</span>
+              </label>
+
+              <label class="radio-inline">
+                <input type="radio" name="Sex" id="Sex_option2" value="2" />
+                <span>Female</span>
+              </label>
+            </div>
+          </div>
+          <!--T stage-->
+          <div class="form-group">
+            <label class="title" for="name">T stage </label>
+            <select class="form-control" id="T_stage">
+              <option value="1">T1</option>
+              <option value="2">T2</option>
+              <option value="3">T3</option>
+              <option value="4">T4</option>
+            </select>
+          </div>
+          <!--N stage-->
+          <div class="form-group">
+            <label class="title" for="name">N stage</label>
+            <select class="form-control" id="N_stage">
+              <option value="0">N0</option>
+              <option value="1">N1</option>
+              <option value="2">N2</option>
+              <option value="3">N3</option>
+              <option value="4">N4</option>
+            </select>
+          </div>
+          <!-- Total stage -->
+          <div class="form-group">
+            <label class="title" for="name">TNM stage</label>
+            <div class="radio-group">
+            <label class="radio-inline">
+              <input
+                type="radio"
+                name="TNM_stage"
+                id="TNM_stage1"
+                value="1"
+                checked
+              />
+              <span>III</span>
+            </label>
+            <label class="radio-inline">
+              <input
+                type="radio"
+                name="TNM_stage"
+                id="TNM_stage2"
+                value="2"
+              />
+              <span>IVa</span>
+            </div>
+            </label>
+          </div>
+          <button type="button" class="btn btn-process" id="process_btn">
+            Process
+          </button>
+        </div>
+
+        <div id="data_process_group">
+          <div class="log_text" id="log_list" style="font-size: 15px;">
+            <div id="log_text" ></div>
+          </div>
+        </div>
+        </div>
+
+        <div class="calc-btn">
+          <button type="button" class="btn btn-calc" id="calculate">
+            Predict
+          </button>
+          <button type="button" class="btn btn-calc" id="exam">
+            Predict
+          </button>
+        </div>
+
+
+        <!-- result page -->
+      <div id="resultWrap">
+        <div id="box1">show result</div>
+        <p>Reference table:</p>
+        <img id="form-img" src="{{ url_for('static', filename = 'img/table.png') }}" />
+      </div>
+
+      </div>
+
+    </div>
+
+    <!-- Modal bbox -->
+    <div
+      class="modal fade"
+      id="myModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+            >
+              &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+              Please enter the correct age
+            </h4>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              close
+            </button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal -->
+    </div>
+    <div
+      class="modal fade"
+      id="loading"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      data-backdrop="static"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <span class="loadImg"></span>
+            <p>uploading and running</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
